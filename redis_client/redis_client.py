@@ -1,30 +1,38 @@
+import functools
 import redis
 
 
+def connect_to_redis(f):
+    @functools.wraps(f)
+    def redis_connector_wrapper(redis_client_instance, *args, **kwargs):
+        if redis_client_instance.redis_connection is None:
+
+            try:
+                redis_client_instance.redis_connection = redis.Redis(host=redis_client_instance.host,
+                                                                     port=redis_client_instance.port,
+                                                                     db=redis_client_instance.db)
+            except Exception as e:
+                raise Exception('Failed to establish connection to redis at host {}, port {} and db {}'
+                                .format(redis_client_instance.host,
+                                        redis_client_instance.port,
+                                        redis_client_instance.db))
+        return f(redis_client_instance, *args, **kwargs)
+
+    return redis_connector_wrapper
+
+
 class RedisClient(object):
-    __instance = None
+    def __init__(self, host, port, db):
+        self.port = port
+        self.host = host
+        self.db = db
+        self.redis_connection = None
 
-    def __new__(cls):
-        if RedisClient.__instance is None:
-            RedisClient.__instance = super(RedisClient, cls).__new__(cls)
-            RedisClient.__instance.set_up_config()
-            RedisClient.__instance.connect()
-        return RedisClient.__instance
-
-    def set_up_config(self):
-        self.host = '192.168.99.100'
-        self.port = 6379
-
-    def connect(self):
-        try:
-            self.redis_connection = redis.Redis(host=self.host, port=self.port)
-        except Exception as e:
-            raise Exception('Failed to connect to Redis at host {} and port {}: '
-                            .format(self.host, self.port, e))
-
+    @connect_to_redis
     def set(self, key, properties_dict):
         self.redis_connection.hmset(key, properties_dict)
 
+    @connect_to_redis
     def get(self, key):
         redis_dict = self.redis_connection.hgetall(key)
         decoded_dict = {k.decode('utf8'): v.decode('utf8') for k, v in redis_dict.items()}

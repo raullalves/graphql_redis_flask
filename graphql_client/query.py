@@ -2,14 +2,14 @@ from collections import namedtuple
 
 from graphene import ObjectType, String, Field
 
-from redis_client.redis_client import RedisClient
+from redis_client.redis_manager import redis_clients
 
-ClientValueObject = namedtuple('Client', ['name', 'full_name', 'age', 'city'])
+ClientValueObject = namedtuple('Client', ['name', 'fullName', 'age', 'city'])
 
 
 class Client(ObjectType):
     name = String()
-    full_name = String()
+    fullName = String()
     age = String()
     city = String()
 
@@ -19,8 +19,8 @@ class Query(ObjectType):
 
     @staticmethod
     def resolve_client(parent, info, id):
-        redis_response = RedisClient().get(id)
+        redis_response = redis_clients.get(id)
         return ClientValueObject(name=redis_response['name'],
-                                 full_name=redis_response['full_name'],
+                                 fullName=redis_response['fullName'],
                                  age=redis_response['age'],
                                  city=redis_response['city'])
