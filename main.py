@@ -2,11 +2,11 @@ from redis_client.redis_manager import redis_clients
 from utils import generate_random_string_key
 
 
-def create_client(name, fullName, age, city):
+def create_client(name, fullname, age, city):
     client_key = generate_random_string_key()
 
     client_dict = {'name': name,
-                   'fullName': fullName,
+                   'fullname': fullname,
                    'age': age,
                    'city': city}
 
@@ -15,14 +15,14 @@ def create_client(name, fullName, age, city):
 
 def populate_redis():
     client_A_key, client_A_dict = create_client(name='Robert',
-                                                fullName='Robert Silva',
+                                                fullname='Robert Silva',
                                                 age=25,
                                                 city='London')
 
     redis_clients.set(client_A_key, client_A_dict)
 
     client_B_key, client_B_dict = create_client(name='Maria',
-                                                fullName='Maria Jhones',
+                                                fullname='Maria Jhones',
                                                 age=44,
                                                 city='Buenos Aires')
 
