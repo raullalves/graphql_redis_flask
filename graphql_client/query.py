@@ -4,18 +4,23 @@ from graphene import ObjectType, String, Field
 
 from redis_client.redis_client import RedisClient
 
-ClientValueObject = namedtuple("Client", ["name", "age"])
+ClientValueObject = namedtuple('Client', ['name', 'full_name', 'age', 'city'])
 
 
 class Client(ObjectType):
     name = String()
+    full_name = String()
     age = String()
+    city = String()
 
 
 class Query(ObjectType):
-    me = Field(Client, id=String(required=True))
+    client = Field(Client, id=String(required=True))
 
     @staticmethod
-    def resolve_me(parent, info, id):
-        r = RedisClient().get(id)
-        return ClientValueObject(name=r['name'], age=r['age'])
+    def resolve_client(parent, info, id):
+        redis_response = RedisClient().get(id)
+        return ClientValueObject(name=redis_response['name'],
+                                 full_name=redis_response['full_name'],
+                                 age=redis_response['age'],
+                                 city=redis_response['city'])
