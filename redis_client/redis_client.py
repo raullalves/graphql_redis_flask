@@ -9,19 +9,27 @@ class RedisClient(object):
         self.redis_connection = None
 
     @connect_to_redis
-    def set(self, key, properties_dict):
+    def set_value(self, key, value):
+        self.redis_connection.set(key, value)
+
+    @connect_to_redis
+    def get_value(self, key):
+        return self.redis_connection.get(key).decode('utf8')
+
+    @connect_to_redis
+    def set_dict(self, key, properties_dict):
         self.redis_connection.hmset(key, properties_dict)
 
     @connect_to_redis
-    def get(self, key):
+    def get_dict(self, key):
         redis_dict = self.redis_connection.hgetall(key)
         decoded_dict = {k.decode('utf8'): v.decode('utf8') for k, v in redis_dict.items()}
 
         return decoded_dict
 
     @connect_to_redis
-    def get_all(self):
+    def get_all_dicts(self):
         keys = self.redis_connection.keys()
-        users_list = [self.get(key) for key in keys]
+        users_list = [self.get_dict(key) for key in keys]
 
         return users_list

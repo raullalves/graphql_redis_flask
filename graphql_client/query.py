@@ -1,5 +1,6 @@
 from graphene import ObjectType, String, Field, List
 
+from graphql_client.authenticator import authenticate
 from schemas.client import Client, ClientValueObject
 from redis_client.redis_manager import redis_clients
 
@@ -9,8 +10,9 @@ class Query(ObjectType):
     clients = List(Client)
 
     @staticmethod
+    @authenticate
     def resolve_client(parent, info, id):
-        redis_response = redis_clients.get(id)
+        redis_response = redis_clients.get_dict(id)
         return ClientValueObject(name=redis_response['name'],
                                  fullname=redis_response['fullname'],
                                  age=redis_response['age'],
@@ -18,5 +20,8 @@ class Query(ObjectType):
                                  id=redis_response['id'])
 
     @staticmethod
+    @authenticate
     def resolve_clients(parent, info):
-        return redis_clients.get_all()
+        headers = info.context.headers
+        return redis_clients.get_all_dicts()
+

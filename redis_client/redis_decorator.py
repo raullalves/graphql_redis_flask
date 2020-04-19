@@ -16,6 +16,7 @@ def connect_to_redis(f):
                                 .format(redis_client_instance.host,
                                         redis_client_instance.port,
                                         redis_client_instance.db))
+
         return f(redis_client_instance, *args, **kwargs)
 
     return redis_connector_wrapper
