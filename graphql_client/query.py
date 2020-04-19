@@ -1,18 +1,7 @@
-from collections import namedtuple
-
 from graphene import ObjectType, String, Field, List
 
+from schemas.client import Client, ClientValueObject
 from redis_client.redis_manager import redis_clients
-
-ClientValueObject = namedtuple('Client', ['name', 'fullname', 'age', 'city', 'id'])
-
-
-class Client(ObjectType):
-    name = String()
-    fullname = String()
-    age = String()
-    city = String()
-    id = String()
 
 
 class Query(ObjectType):
