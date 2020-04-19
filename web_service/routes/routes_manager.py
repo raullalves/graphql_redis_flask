@@ -4,6 +4,7 @@ import flask
 from flask_graphql import GraphQLView
 from graphql_client.query import Query
 
+
 def define_routes(app):
     @app.errorhandler(404)
     def not_found(error):

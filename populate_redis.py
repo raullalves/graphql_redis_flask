@@ -5,7 +5,8 @@ from utils import generate_random_string_key
 def create_client(name, fullname, age, city):
     client_key = generate_random_string_key()
 
-    client_dict = {'name': name,
+    client_dict = {'id': client_key,
+                   'name': name,
                    'fullname': fullname,
                    'age': age,
                    'city': city}

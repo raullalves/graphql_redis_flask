@@ -18,3 +18,13 @@ class RedisClient(object):
         decoded_dict = {k.decode('utf8'): v.decode('utf8') for k, v in redis_dict.items()}
 
         return decoded_dict
+
+    @connect_to_redis
+    def get_all(self):
+        keys = self.redis_connection.keys()
+        users_list = []
+        for key in keys:
+            user_dict = self.get(key)
+            users_list.append(user_dict)
+
+        return users_list
