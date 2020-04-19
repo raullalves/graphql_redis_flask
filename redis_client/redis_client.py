@@ -22,9 +22,6 @@ class RedisClient(object):
     @connect_to_redis
     def get_all(self):
         keys = self.redis_connection.keys()
-        users_list = []
-        for key in keys:
-            user_dict = self.get(key)
-            users_list.append(user_dict)
+        users_list = [self.get(key) for key in keys]
 
         return users_list
