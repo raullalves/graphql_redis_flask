@@ -16,7 +16,7 @@ def define_routes(app):
 
     schema_query = graphene.Schema(query=Query)
 
-    app.add_url_rule('/graphql_client-query', view_func=GraphQLView.as_view(
-        'graphql_client-query',
+    app.add_url_rule('/simple_bank_app', view_func=GraphQLView.as_view(
+        'simple_bank_app',
         schema=schema_query, graphiql=True
     ))

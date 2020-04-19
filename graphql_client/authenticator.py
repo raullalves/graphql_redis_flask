@@ -4,7 +4,7 @@ import functools
 def authenticate(f):
     @functools.wraps(f)
     def authenticator(*args, **kwargs):
-        headers = args[1].context.headers.get_dict('Authorization', None)
+        headers = args[1].context.headers.get('Authorization', None)
         if headers is None:
             raise Exception('Missing user authorization')
 
