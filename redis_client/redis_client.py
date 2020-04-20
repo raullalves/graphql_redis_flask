@@ -32,8 +32,7 @@ class RedisClient(object):
         return decoded_dict
 
     @connect_to_redis
-    def get_all_dicts(self):
+    def get_all_keys(self):
         keys = self.redis_connection.keys()
-        users_list = [self.get_dict(key) for key in keys]
 
-        return users_list
+        return keys

@@ -1,13 +1,14 @@
 from collections import namedtuple
-
 from graphene import ObjectType, String
 
-ClientValueObject = namedtuple('Client', ['name', 'fullname', 'age', 'city', 'id'])
+ClientValueObject = namedtuple('Client', ['id', 'firstname', 'lastname', 'age', 'city', 'creditcardnumber', 'cvv'])
 
 
 class Client(ObjectType):
-    name = String()
-    fullname = String()
+    id = String()
+    firstname = String()
+    lastname = String()
     age = String()
     city = String()
-    id = String()
+    creditcardnumber = String()
+    cvv = String()

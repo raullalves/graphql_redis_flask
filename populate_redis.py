@@ -40,18 +40,6 @@ def create_login_data(qtd_of_users=20):
     redis_users.set_value('admin', 'admin')
 
 
-def create_client(name, fullname, age, city):
-    client_key = generate_random_string()
-
-    client_dict = {'id': client_key,
-                   'name': name,
-                   'fullname': fullname,
-                   'age': age,
-                   'city': city}
-
-    return client_key, client_dict
-
-
 def main():
     create_clients()
     create_login_data()

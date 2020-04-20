@@ -13,6 +13,7 @@ class CreateToken(Mutation):
     success = Boolean()
     token = String()
 
+    @staticmethod
     def mutate(root, info, username, password):
         pass_redis = redis_users.get_value(username)
         if pass_redis is None:
