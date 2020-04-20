@@ -14,7 +14,11 @@ class RedisClient(object):
 
     @connect_to_redis
     def get_value(self, key):
-        return self.redis_connection.get(key).decode('utf8')
+        value = self.redis_connection.get(key)
+        if value is None:
+            return None
+
+        return value.decode('utf8')
 
     @connect_to_redis
     def set_dict(self, key, properties_dict):
