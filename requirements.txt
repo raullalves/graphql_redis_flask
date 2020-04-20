@@ -1,4 +1,6 @@
-graphene==2.1.8
 Flask==1.1.2
-Flask_GraphQL==2.0.1
 redis==3.4.1
+graphene==2.1.8
+Flask_GraphQL==2.0.1
+Werkzeug==1.0.1
+PyJWT==1.7.1
